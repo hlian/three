@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         _prepareHockey()
         // Override point for customization after application launch.
-        self.root = ViewController()
+        self.root = ViewController(homeLayoutView: HomeLayoutView(withBigView: UIView(), midView: UIView(), smallView: UIView()))
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         self.window!.backgroundColor = UIColor.whiteColor()
         self.window!.rootViewController = root
