@@ -1,0 +1,7 @@
+app_identifier "codes.hao.ThreeThings" # The bundle identifier of your app
+apple_id "me@haolian.org" # Your Apple email address
+
+team_id "Z4L59FC4GF"  # Developer Portal Team ID
+
+# you can even provide different app identifiers, Apple IDs and team names per lane:
+# More information: https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Appfile.md
