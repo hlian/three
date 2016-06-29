@@ -33,13 +33,6 @@ class HomeLayoutView: UIView {
         self.smallView._frameOrigin = CGPointMake(self.midView._frameSteam.x + 20, self.midView._frameOrigin.y)
         self.smallView._frameWidth = usableX * 0.45
         self.smallView._frameHeight = usableY * 0.45
-
-        self.bigView.layer.borderColor = UIColor.redColor().CGColor
-        self.bigView.layer.borderWidth = 1
-        self.midView.layer.borderColor = UIColor.redColor().CGColor
-        self.midView.layer.borderWidth = 1
-        self.smallView.layer.borderColor = UIColor.redColor().CGColor
-        self.smallView.layer.borderWidth = 1
     }
 
     required init?(coder aDecoder: NSCoder) {

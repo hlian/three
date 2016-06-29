@@ -53,4 +53,21 @@ extension UIView {
             self.frame = CGRectMake(newValue.x - self._frameWidth, newValue.y - self._frameHeight, self._frameWidth, self._frameHeight)
         }
     }
+
+    public var _width: CGFloat {
+        get {
+            return self.bounds.size.width
+        }
+    }
+
+    public var _height: CGFloat {
+        get {
+            return self.bounds.size.height
+        }
+    }
+
+    public func debug() {
+        self.layer.borderColor = UIColor.redColor().CGColor
+        self.layer.borderWidth = 1
+    }
 }
