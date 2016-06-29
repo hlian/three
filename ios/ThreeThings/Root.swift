@@ -55,7 +55,7 @@ private class RootVC: UIViewController {
         addChildViewController(siblingVC)
         siblingVC.view.frame = frame
         siblingVC.view.layer.opacity = 0
-        transitionFromViewController(childVC, toViewController: siblingVC, duration: 0.3, options: UIViewAnimationOptions(rawValue: 0), animations: {
+        transitionFromViewController(childVC, toViewController: siblingVC, duration: 0.2, options: UIViewAnimationOptions(rawValue: 0), animations: {
             siblingVC.view.frame = self.view.bounds
             siblingVC.view.layer.opacity = 1
             self.childVC.view.layer.opacity = 0
@@ -115,6 +115,11 @@ class EditView: UIView {
         }
 
         textView.rac_textSignal().subscribeNext {
+            [unowned self] _ in
+            self._invalidateTextViewFont()
+        }
+
+        keyboardHeight.signal.observeNext {
             [unowned self] _ in
             self._invalidateTextViewFont()
         }
@@ -198,9 +203,13 @@ class Root {
                 keyboardHeight.swap(isPortrait() ? rect.size.height : rect.size.width)
             }
         }
+        NSNotificationCenter.defaultCenter().rac_notifications(UIKeyboardDidHideNotification, object: nil).start {
+            event in
+            keyboardHeight.swap(0)
+        }
 
         let bigButton = ChunkyButton(text: "ONE BIG THING".localized(), didClick: _didClick(.Big))
-        let midButton = ChunkyButton(text: "ONE MID THING".localized(), didClick: _didClick(.Mid))
+        let midButton = ChunkyButton(text: "ONE MID THING".localized (), didClick: _didClick(.Mid))
         let smallButton = ChunkyButton(text: "ONE SMALL THING".localized(), didClick: _didClick(.Small))
 
         let homeLayoutView = HomeLayoutView(withBigView: bigButton, midView: midButton, smallView: smallButton)
