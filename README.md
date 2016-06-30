@@ -22,4 +22,13 @@ app for smart people with lustrous hair.
 (but why would you? are you me?)
 
   $ fastlane beta
+  
+<b>developer diary</b>
+
+  • not using UINavigationController is the
+    best thing you can do for your interior life,
+    stress-wise
+    
+  • why did nobody tell me that UIControl was my
+    friend and yours
 </pre>
