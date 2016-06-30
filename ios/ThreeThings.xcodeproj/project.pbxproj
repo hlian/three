@@ -15,6 +15,9 @@
 		0786E3031D232261000B2868 /* Localize_Swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 079D78F61D2320E8007F6CAD /* Localize_Swift.framework */; };
 		0786E3041D232261000B2868 /* Localize_Swift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 079D78F61D2320E8007F6CAD /* Localize_Swift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0786E3061D2326FE000B2868 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0786E3051D2326FE000B2868 /* HomeView.swift */; };
+		07D350B31D258A9000624FC9 /* Facts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D350B21D258A9000624FC9 /* Facts.swift */; };
+		07D350B41D258D9900624FC9 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07D350B01D258A7600624FC9 /* SQLite.framework */; };
+		07D350B51D258D9900624FC9 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 07D350B01D258A7600624FC9 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		07DB720C1D22DC3200598823 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07DB720A1D22DC3200598823 /* ReactiveCocoa.framework */; };
 		07DB720D1D22DC3200598823 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07DB720B1D22DC3200598823 /* Result.framework */; };
 		07DB72121D22E32800598823 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07DB72111D22E32800598823 /* LaunchScreen.storyboard */; };
@@ -36,6 +39,7 @@
 			files = (
 				0786E3021D23224B000B2868 /* PureLayout.framework in Embed Frameworks */,
 				0786E3041D232261000B2868 /* Localize_Swift.framework in Embed Frameworks */,
+				07D350B51D258D9900624FC9 /* SQLite.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -51,6 +55,8 @@
 		0786E3051D2326FE000B2868 /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		079D78F61D2320E8007F6CAD /* Localize_Swift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Localize_Swift.framework; path = Carthage/Build/iOS/Localize_Swift.framework; sourceTree = "<group>"; };
 		079D78FA1D232119007F6CAD /* PureLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout.framework; path = Carthage/Build/iOS/PureLayout.framework; sourceTree = "<group>"; };
+		07D350B01D258A7600624FC9 /* SQLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SQLite.framework; path = Carthage/Build/iOS/SQLite.framework; sourceTree = "<group>"; };
+		07D350B21D258A9000624FC9 /* Facts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Facts.swift; sourceTree = "<group>"; };
 		07DB720A1D22DC3200598823 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = Carthage/Build/iOS/ReactiveCocoa.framework; sourceTree = "<group>"; };
 		07DB720B1D22DC3200598823 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
 		07DB72111D22E32800598823 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -69,6 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07D350B41D258D9900624FC9 /* SQLite.framework in Frameworks */,
 				0786E3031D232261000B2868 /* Localize_Swift.framework in Frameworks */,
 				07DB720C1D22DC3200598823 /* ReactiveCocoa.framework in Frameworks */,
 				07DB721A1D2301C900598823 /* HockeySDK.framework in Frameworks */,
@@ -112,6 +119,7 @@
 				07DB722A1D231B2900598823 /* Colors.swift */,
 				07DB72311D231E9F00598823 /* Bridge.h */,
 				0786E3051D2326FE000B2868 /* HomeView.swift */,
+				07D350B21D258A9000624FC9 /* Facts.swift */,
 			);
 			path = ThreeThings;
 			sourceTree = "<group>";
@@ -119,6 +127,7 @@
 		07DB722E1D231E7C00598823 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				07D350B01D258A7600624FC9 /* SQLite.framework */,
 				079D78FA1D232119007F6CAD /* PureLayout.framework */,
 				079D78F61D2320E8007F6CAD /* Localize_Swift.framework */,
 				07DB721B1D2301DA00598823 /* HockeySDKResources.bundle */,
@@ -227,6 +236,7 @@
 				07DB72271D23159200598823 /* UIViewExtensions.swift in Sources */,
 				07DB721E1D230EC600598823 /* HomeLayoutView.swift in Sources */,
 				07DB722B1D231B2900598823 /* Colors.swift in Sources */,
+				07D350B31D258A9000624FC9 /* Facts.swift in Sources */,
 				0761A1A71D22DAED001FAF1C /* AppDelegate.swift in Sources */,
 				0786E3061D2326FE000B2868 /* HomeView.swift in Sources */,
 				07DB72201D230F9F00598823 /* Utils.swift in Sources */,

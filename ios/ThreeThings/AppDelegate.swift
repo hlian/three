@@ -8,6 +8,7 @@
 
 import HockeySDK
 import Localize_Swift
+import SQLite
 import UIKit
 
 @UIApplicationMain
@@ -15,11 +16,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var root: Root?
+    var facts: Facts?
+    var db: Connection?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        do {
+            self.db = try connect()
+        } catch {
+            fatalError("unable to connect to database: \(error)")
+        }
+
         _prepareHockey()
 
         self.root = Root()
+        self.facts = Facts(db: db!)
+
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         self.window!.backgroundColor = UIColor.whiteColor()
         self.window!.rootViewController = root!.vc
