@@ -25,10 +25,18 @@ app for smart people with lustrous hair.
   
 <b>developer diary</b>
 
-  • not using UINavigationController is
+  • Not using UINavigationController is
     the best thing you can do for your
     interior life, stress-wise
     
-  • why did nobody tell me that UIControl
+  • Why did nobody tell me that UIControl
     was my friend and yours
+    
+  • Everybody should be using Fastlane
+  
+  • Everybody should be using Carthage
+  
+  • SQLite.swift is fun and friendly (Core
+    Data is a drunk dude who follows you
+    home)
 </pre>
