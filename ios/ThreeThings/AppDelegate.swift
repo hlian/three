@@ -20,17 +20,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var db: Connection?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        _prepareHockey()
+
         do {
             self.db = try connect()
         } catch {
             fatalError("unable to connect to database: \(error)")
         }
 
-        _prepareHockey()
+        do {
+            self.facts = try Facts(db: db!)
+        } catch {
+            fatalError("unable to set up facts: \(error)")
+        }
 
         self.root = Root()
-        self.facts = Facts(db: db!)
-
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         self.window!.backgroundColor = UIColor.whiteColor()
         self.window!.rootViewController = root!.vc
