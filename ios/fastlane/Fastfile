@@ -12,13 +12,13 @@ platform :ios do
   desc "make a beta build"
   lane :beta_build do
     match
-    gym(scheme: "Release") # Build your app - more options available
+    gym(scheme: "Release", clean: true)
   end
 
   desc "submit a beta build"
   lane :beta do
     increment_build_number
-    gym(scheme: "Release")
+    gym(scheme: "Release", clean: true)
     pilot
   end
 
