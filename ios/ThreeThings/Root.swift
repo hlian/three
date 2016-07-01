@@ -197,13 +197,13 @@ class Root {
     private var editVC: EditVC!
 
     init() {
-        NSNotificationCenter.defaultCenter().rac_notifications(UIKeyboardDidShowNotification, object: nil).start {
+        NSNotificationCenter.defaultCenter().rac_notifications(UIKeyboardWillShowNotification, object: nil).start {
             event in
             if let rect = (event.value!.userInfo![UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue() {
                 keyboardHeight.swap(isPortrait() ? rect.size.height : rect.size.width)
             }
         }
-        NSNotificationCenter.defaultCenter().rac_notifications(UIKeyboardDidHideNotification, object: nil).start {
+        NSNotificationCenter.defaultCenter().rac_notifications(UIKeyboardWillHideNotification, object: nil).start {
             event in
             keyboardHeight.swap(0)
         }
