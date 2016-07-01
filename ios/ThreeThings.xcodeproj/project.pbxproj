@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		070B18EA1D26EFAD005015E1 /* ViewControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070B18E91D26EFAD005015E1 /* ViewControllers.swift */; };
+		070B18EC1D26EFF7005015E1 /* EditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070B18EB1D26EFF7005015E1 /* EditView.swift */; };
+		070B18EE1D26F016005015E1 /* UIFontX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070B18ED1D26F016005015E1 /* UIFontX.swift */; };
 		0761A1A71D22DAED001FAF1C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0761A1A61D22DAED001FAF1C /* AppDelegate.swift */; };
 		0761A1A91D22DAED001FAF1C /* Root.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0761A1A81D22DAED001FAF1C /* Root.swift */; };
 		0761A1AE1D22DAED001FAF1C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0761A1AD1D22DAED001FAF1C /* Assets.xcassets */; };
@@ -24,7 +27,7 @@
 		07DB721A1D2301C900598823 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07DB72191D2301C900598823 /* HockeySDK.framework */; };
 		07DB721E1D230EC600598823 /* HomeLayoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DB721D1D230EC600598823 /* HomeLayoutView.swift */; };
 		07DB72201D230F9F00598823 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DB721F1D230F9F00598823 /* Utils.swift */; };
-		07DB72271D23159200598823 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DB72261D23159200598823 /* UIViewExtensions.swift */; };
+		07DB72271D23159200598823 /* UIViewX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DB72261D23159200598823 /* UIViewX.swift */; };
 		07DB72291D231A7000598823 /* ChunkyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DB72281D231A7000598823 /* ChunkyButton.swift */; };
 		07DB722B1D231B2900598823 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DB722A1D231B2900598823 /* Colors.swift */; };
 /* End PBXBuildFile section */
@@ -46,6 +49,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		070B18E91D26EFAD005015E1 /* ViewControllers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllers.swift; sourceTree = "<group>"; };
+		070B18EB1D26EFF7005015E1 /* EditView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditView.swift; sourceTree = "<group>"; };
+		070B18ED1D26F016005015E1 /* UIFontX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIFontX.swift; sourceTree = "<group>"; };
 		0761A1A31D22DAED001FAF1C /* ThreeThings.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ThreeThings.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0761A1A61D22DAED001FAF1C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0761A1A81D22DAED001FAF1C /* Root.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Root.swift; sourceTree = "<group>"; };
@@ -63,7 +69,7 @@
 		07DB721B1D2301DA00598823 /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = HockeySDKResources.bundle; path = "Vendor/HockeySDK-iOS/HockeySDK.embeddedframework/Resources/HockeySDKResources.bundle"; sourceTree = "<group>"; };
 		07DB721D1D230EC600598823 /* HomeLayoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeLayoutView.swift; sourceTree = "<group>"; };
 		07DB721F1D230F9F00598823 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
-		07DB72261D23159200598823 /* UIViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
+		07DB72261D23159200598823 /* UIViewX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewX.swift; sourceTree = "<group>"; };
 		07DB72281D231A7000598823 /* ChunkyButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChunkyButton.swift; sourceTree = "<group>"; };
 		07DB722A1D231B2900598823 /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		07DB72311D231E9F00598823 /* Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bridge.h; sourceTree = "<group>"; };
@@ -86,6 +92,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		070B18EF1D26F024005015E1 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				07DB72261D23159200598823 /* UIViewX.swift */,
+				070B18ED1D26F016005015E1 /* UIFontX.swift */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
 		0761A19A1D22DAED001FAF1C = {
 			isa = PBXGroup;
 			children = (
@@ -106,6 +121,7 @@
 		0761A1A51D22DAED001FAF1C /* ThreeThings */ = {
 			isa = PBXGroup;
 			children = (
+				070B18EF1D26F024005015E1 /* Extensions */,
 				0761A1A61D22DAED001FAF1C /* AppDelegate.swift */,
 				0761A1A81D22DAED001FAF1C /* Root.swift */,
 				0761A1AD1D22DAED001FAF1C /* Assets.xcassets */,
@@ -113,12 +129,13 @@
 				07DB72111D22E32800598823 /* LaunchScreen.storyboard */,
 				07DB721D1D230EC600598823 /* HomeLayoutView.swift */,
 				07DB721F1D230F9F00598823 /* Utils.swift */,
-				07DB72261D23159200598823 /* UIViewExtensions.swift */,
 				07DB72281D231A7000598823 /* ChunkyButton.swift */,
 				07DB722A1D231B2900598823 /* Colors.swift */,
 				07DB72311D231E9F00598823 /* Bridge.h */,
 				0786E3051D2326FE000B2868 /* HomeView.swift */,
 				07D350B21D258A9000624FC9 /* Facts.swift */,
+				070B18E91D26EFAD005015E1 /* ViewControllers.swift */,
+				070B18EB1D26EFF7005015E1 /* EditView.swift */,
 			);
 			path = ThreeThings;
 			sourceTree = "<group>";
@@ -248,7 +265,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				0761A1A91D22DAED001FAF1C /* Root.swift in Sources */,
-				07DB72271D23159200598823 /* UIViewExtensions.swift in Sources */,
+				070B18EE1D26F016005015E1 /* UIFontX.swift in Sources */,
+				07DB72271D23159200598823 /* UIViewX.swift in Sources */,
+				070B18EC1D26EFF7005015E1 /* EditView.swift in Sources */,
+				070B18EA1D26EFAD005015E1 /* ViewControllers.swift in Sources */,
 				07DB721E1D230EC600598823 /* HomeLayoutView.swift in Sources */,
 				07DB722B1D231B2900598823 /* Colors.swift in Sources */,
 				07D350B31D258A9000624FC9 /* Facts.swift in Sources */,
