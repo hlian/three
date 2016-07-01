@@ -10,7 +10,7 @@
 		070B18EA1D26EFAD005015E1 /* ViewControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070B18E91D26EFAD005015E1 /* ViewControllers.swift */; };
 		070B18EC1D26EFF7005015E1 /* EditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070B18EB1D26EFF7005015E1 /* EditView.swift */; };
 		070B18EE1D26F016005015E1 /* UIFontX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070B18ED1D26F016005015E1 /* UIFontX.swift */; };
-		070B18F01D26F3EA005015E1 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 07DB721B1D2301DA00598823 /* HockeySDKResources.bundle */; };
+		070B18F11D2717B5005015E1 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 07DB721B1D2301DA00598823 /* HockeySDKResources.bundle */; };
 		0761A1A71D22DAED001FAF1C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0761A1A61D22DAED001FAF1C /* AppDelegate.swift */; };
 		0761A1A91D22DAED001FAF1C /* Root.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0761A1A81D22DAED001FAF1C /* Root.swift */; };
 		0761A1AE1D22DAED001FAF1C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0761A1AD1D22DAED001FAF1C /* Assets.xcassets */; };
@@ -220,7 +220,7 @@
 			files = (
 				0761A1AE1D22DAED001FAF1C /* Assets.xcassets in Resources */,
 				07DB72121D22E32800598823 /* LaunchScreen.storyboard in Resources */,
-				070B18F01D26F3EA005015E1 /* HockeySDKResources.bundle in Resources */,
+				070B18F11D2717B5005015E1 /* HockeySDKResources.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -382,7 +382,7 @@
 				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 28;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -425,7 +425,7 @@
 				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 28;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
