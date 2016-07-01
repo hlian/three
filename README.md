@@ -12,6 +12,10 @@ This was my 20% Originate project in
 June 2016. <i>ThreeThings</i> is a simple to-do
 app for smart people with lustrous hair.
 
+<b>a working environment</b>
+
+  $ brew install carthage
+
 <b>to build</b>
 
   $ cd ios
@@ -20,7 +24,11 @@ app for smart people with lustrous hair.
 <b>to deploy</b>
 
 (but why would you? are you me?)
-
+  
+  $ brew install ruby
+  $ which gem
+  /usr/local/bin/gem
+  $ gem install fastlane --user
   $ fastlane beta
   
 <b>developer diary</b>
