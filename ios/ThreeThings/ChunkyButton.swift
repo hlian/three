@@ -11,19 +11,16 @@ import PureLayout
 import ReactiveCocoa
 
 private class InnerChunkyButton: UIView {
-    let text: String
     let label: UILabel
     let insetView: UIView
     let shadowView: UIView
 
-    init(text: String) {
-        self.text = text
+    init() {
         self.label = UILabel(frame: someRect)
         self.shadowView = UIView(frame: someRect)
         self.insetView = UIView(frame: someRect)
         super.init(frame: someRect)
 
-        self.label.text = self.text
         self.backgroundColor = homeColor
         self.label.textColor = homeTextColor
 
@@ -47,18 +44,26 @@ private class InnerChunkyButton: UIView {
         self.insetView.autoSetDimension(.Height, toSize: 3)
     }
 
+    func updateText(text: String) {
+        self.label.text = text
+    }
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
 
+protocol ButtonViewModel {
+    var chunkyButtonText: String { get }
+    func chunkyButtonDidClick()
+}
+
 class ChunkyButton: UIControl {
     private let inner: InnerChunkyButton
-    private let didClick: (ChunkyButton -> ())?
+    private var viewModel: ButtonViewModel!
 
-    init(text: String, didClick: (ChunkyButton -> ())?) {
-        self.inner = InnerChunkyButton(text: text)
-        self.didClick = didClick
+    init() {
+        self.inner = InnerChunkyButton()
         super.init(frame: someRect)
         self.selected = false
         self._invalidateSelected()
@@ -66,8 +71,13 @@ class ChunkyButton: UIControl {
 
         self.rac_signalForControlEvents([.TouchUpInside]).subscribeNext {
             [unowned self] _ in
-            self.didClick?(self)
+            self.viewModel.chunkyButtonDidClick()
         }
+    }
+
+    func updateViewModel(viewModel: ButtonViewModel) {
+        self.viewModel = viewModel
+        self.inner.updateText(viewModel.chunkyButtonText)
     }
 
     override func layoutSubviews() {

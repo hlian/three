@@ -1,20 +1,23 @@
 import UIKit
 
+protocol EditViewModel {
+    var editText: String { get }
+    func editDone(text: String)
+}
+
 class EditView: UIView {
-    let didClick: (EditView -> ())?
-    let textView: UITextView = UITextView(forAutoLayout: ())
-    let done: UIButton = UIButton(type: .System)
+    private let textView: UITextView = UITextView(forAutoLayout: ())
+    private let done: UIButton = UIButton(type: .System)
+    private var viewModel: EditViewModel?
 
     private var doneRightConstraint: NSLayoutConstraint!
 
-    init(didClick: (EditView -> ())?) {
-        self.didClick = didClick
+    init() {
         super.init(frame: someRect)
 
         addSubview(self.textView)
         textView.autoPinEdgesToSuperviewEdgesWithInsets(UIEdgeInsetsMake(100, 0, 0, 0))
         textView.editable = true
-        textView.text = "ONE BIG THING"
         textView.textColor = editTextColor
         textView.backgroundColor = editBackgroundColor
         textView.autocapitalizationType = .AllCharacters
@@ -30,7 +33,7 @@ class EditView: UIView {
 
         done.rac_signalForControlEvents([.TouchUpInside]).subscribeNext {
             [unowned self] _ in
-            self.didClick?(self)
+            self.viewModel?.editDone(self.textView.text)
         }
 
         textView.rac_textSignal().subscribeNext {
@@ -42,6 +45,16 @@ class EditView: UIView {
             [unowned self] _ in
             self._invalidateTextViewFont()
         }
+    }
+
+    func updateViewModel(viewModel: EditViewModel) {
+        textView.text = viewModel.editText
+        self.viewModel = viewModel
+        self._invalidateTextViewFont()
+    }
+
+    func focus() {
+        textView.becomeFirstResponder()
     }
 
     override func layoutSubviews() {

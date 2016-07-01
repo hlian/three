@@ -23,6 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _prepareHockey()
 
         do {
+            reset()
             self.db = try connect()
         } catch {
             fatalError("unable to connect to database: \(error)")
@@ -34,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             fatalError("unable to set up facts: \(error)")
         }
 
-        self.root = Root()
+        self.root = Root(db: db)
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         self.window!.backgroundColor = UIColor.whiteColor()
         self.window!.rootViewController = root!.vc

@@ -1,20 +1,22 @@
-//
-//  Facts.swift
-//  ThreeThings
-//
-//  Created by hao on 6/30/16.
-//  Copyright © 2016 ThreeThings. All rights reserved.
-//
-
 import Foundation
 import SQLite
 
-let Thing = Table("thing")
-let Version = Table("version")
-let id = Expression<Int64>("id")
-let text = Expression<String>("text")
-let due = Expression<NSDate?>("due")
-let version = Expression<Int64>("version")
+private let thingTable = Table("thing")
+private let versionTable = Table("version")
+private let id = Expression<Int64>("id")
+private let text = Expression<String>("text")
+private let due = Expression<NSDate?>("due")
+private let version = Expression<Int64>("version")
+
+struct Fact<T> {
+    let primaryKey: Int64
+    let fact: T
+}
+
+struct Thing {
+    let text: String
+    let due: NSDate?
+}
 
 func connect() throws -> Connection {
     if let path = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first {
@@ -34,6 +36,10 @@ func reset() {
     }
 }
 
+func insertThing(db: Connection, thing: Thing) throws {
+    try db.run(thingTable.insert(text <- thing.text, due <- thing.due))
+}
+
 class Facts {
     let db: Connection
 
@@ -50,7 +56,7 @@ class Facts {
             try f()
             return v + 1
         }
-        try db.run(Version.update(version <- finalVersion))
+        try db.run(versionTable.update(version <- finalVersion))
         print("facts: we are at version \(_version())")
     }
 
@@ -64,16 +70,16 @@ class Facts {
     }
 
     func _migrate1() throws {
-        try db.run(Version.create {
+        try db.run(versionTable.create {
             t in
             t.column(version, primaryKey: true)
         })
-        try db.run(Thing.create {
+        try db.run(thingTable.create {
             t in
             t.column(id, primaryKey: .Autoincrement)
             t.column(text)
             t.column(due)
         })
-        try db.run(Version.insert(version <- 1))
+        try db.run(versionTable.insert(version <- 1))
     }
 }
