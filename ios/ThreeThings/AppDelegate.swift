@@ -23,7 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _prepareHockey()
 
         do {
-            reset()
             self.db = try connect()
         } catch {
             fatalError("unable to connect to database: \(error)")

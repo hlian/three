@@ -52,6 +52,10 @@ class ThingViewModel: ButtonViewModel, EditViewModel {
         self.editDone_ = editDone
     }
 
+    var chunkyButtonActive: Bool {
+        return thing != nil
+    }
+
     var chunkyButtonText: String {
         return text ?? defaultText
     }

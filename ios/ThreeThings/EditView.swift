@@ -20,7 +20,6 @@ class EditView: UIView {
         textView.editable = true
         textView.textColor = editTextColor
         textView.backgroundColor = editBackgroundColor
-        textView.autocapitalizationType = .AllCharacters
         textView.textContainer.lineFragmentPadding = 0
         textView.returnKeyType = .Done
 

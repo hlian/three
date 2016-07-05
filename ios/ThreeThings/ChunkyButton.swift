@@ -21,14 +21,12 @@ private class InnerChunkyButton: UIView {
         self.insetView = UIView(frame: someRect)
         super.init(frame: someRect)
 
-        self.backgroundColor = homeColor
-        self.label.textColor = homeTextColor
-
         self.label.numberOfLines = 0
         self.addSubview(self.label)
         self.label.translatesAutoresizingMaskIntoConstraints = false
         self.label.autoCenterInSuperview()
         self.label.autoMatchDimension(.Width, toDimension: .Width, ofView: self, withMultiplier: 0.75)
+        self.label.autoMatchDimension(.Height, toDimension: .Height, ofView: self, withMultiplier: 0.75)
         self.label.textAlignment = .Center
         self.addSubview(self.shadowView)
         self.shadowView.translatesAutoresizingMaskIntoConstraints = false
@@ -55,6 +53,7 @@ private class InnerChunkyButton: UIView {
 
 protocol ButtonViewModel {
     var chunkyButtonText: String { get }
+    var chunkyButtonActive: Bool { get }
     func chunkyButtonDidClick()
 }
 
@@ -78,13 +77,20 @@ class ChunkyButton: UIControl {
     func updateViewModel(viewModel: ButtonViewModel) {
         self.viewModel = viewModel
         self.inner.updateText(viewModel.chunkyButtonText)
+        if viewModel.chunkyButtonActive {
+            inner.backgroundColor = homeTextColor
+            inner.label.textColor = homeColor
+        } else {
+            inner.backgroundColor = homeColor
+            inner.label.textColor = homeTextColor
+        }
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
         // Set the font to be proportional to height. That way we don't have to hardcode
         // font sizes for each screen size.
-        self.inner.label.font = UIFont.systemFontOfSize(self.bounds.size.height / 5.5, weight: UIFontWeightHeavy)
+        self.inner.label.font = UIFont.systemFontOfSize(self.bounds.size.height / 8, weight: UIFontWeightHeavy)
         if self.selected {
             self.inner._frameOrigin = CGPointMake(0, 3)
         } else {
