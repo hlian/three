@@ -124,7 +124,7 @@ class Root {
             let newThing = try! {
                 _ -> Thing? in
                 if let text = newText {
-                    let thing = Thing(text: text, due: nil)
+                    let thing = Thing(text: text, creation: NSDate(), due: nil)
                     try insertThing(self.db, thing: thing)
                     return thing
                 } else {

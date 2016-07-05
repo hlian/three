@@ -7,6 +7,7 @@ private let id = Expression<Int64>("id")
 private let text = Expression<String>("text")
 private let due = Expression<NSDate?>("due")
 private let version = Expression<Int64>("version")
+private let creation = Expression<NSDate>("creation")
 
 struct Fact<T> {
     let primaryKey: Int64
@@ -15,6 +16,7 @@ struct Fact<T> {
 
 struct Thing {
     let text: String
+    let creation: NSDate
     let due: NSDate?
 }
 
@@ -47,7 +49,8 @@ class Facts {
         self.db = db
 
         let migrations =
-            [("make thing and version", _migrate1)]
+            [ ("make thing and version", _migrate1)
+            , ("add creation date", _migrate2)]
         let initialVersion = _version()
         let finalVersion = try migrations.dropFirst(Int(initialVersion)).reduce(initialVersion) {
             (v, tuple) in
@@ -81,5 +84,10 @@ class Facts {
             t.column(due)
         })
         try db.run(versionTable.insert(version <- 1))
+    }
+
+    func _migrate2() throws {
+        let date = NSDate()
+        try db.run(thingTable.addColumn(creation, defaultValue: date))
     }
 }
