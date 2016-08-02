@@ -12,12 +12,6 @@ import SQLite
 import ReactiveCocoa
 import Result
 
-private enum Magnitude {
-    case Big
-    case Mid
-    case Small
-}
-
 func isPortrait() -> Bool {
     return UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation)
 }
@@ -40,11 +34,13 @@ func prepareKeyboardHeight() {
 class ThingViewModel: ButtonViewModel, EditViewModel {
     let thing: Thing?
     let text: String?
+    let magnitude: Magnitude // pop pop
     let defaultText: String
     let didTap: ThingViewModel -> ()
     let editDone_: (ThingViewModel, String?) -> ()
 
-    init(thing: Thing?, defaultText: String, didTap: ThingViewModel -> (), editDone: (ThingViewModel, String?) -> ()) {
+    init(thing: Thing?, magnitude: Magnitude, defaultText: String, didTap: ThingViewModel -> (), editDone: (ThingViewModel, String?) -> ()) {
+        self.magnitude = magnitude
         self.thing = thing
         self.defaultText = defaultText
         self.text = thing?.text
@@ -109,30 +105,21 @@ class Root {
         self.editVC = editVC
         self.rootVC = RootVC(childVC: homeVC)
 
-        bigButton.updateViewModel(_makeThingViewModel("A BIG THING".localized(), button: bigButton))
-        midButton.updateViewModel(_makeThingViewModel("A MEDIUM THING".localized(), button: midButton))
-        smallButton.updateViewModel(_makeThingViewModel("A SMALL THING".localized(), button: smallButton))
+        _reloadData()
     }
 
-    private func _makeThingViewModel(defaultText: String, button: ChunkyButton) -> ThingViewModel {
-        return ThingViewModel(thing: nil, defaultText: defaultText, didTap: {
+    private func _makeThingViewModel(thing0: Thing?, _ defaultText: String, _ magnitude: Magnitude, _ button: ChunkyButton) -> ThingViewModel {
+        return ThingViewModel(thing: thing0, magnitude: magnitude, defaultText: defaultText, didTap: {
             [unowned self] me in
             self.editView.updateViewModel(me)
             self.rootVC.present(self.editVC, self.rootVC.view.bounds)
         }, editDone: {
             [unowned self] (me, newText) in
-            let newThing = try! {
-                _ -> Thing? in
-                if let text = newText {
-                    let thing = Thing(text: text, creation: NSDate(), due: nil)
-                    try insertThing(self.db, thing: thing)
-                    return thing
-                } else {
-                    return nil
-                }
-            }()
-            let newViewModel = ThingViewModel(thing: newThing, defaultText: me.defaultText, didTap: me.didTap, editDone: me.editDone_)
-            button.updateViewModel(newViewModel)
+            if let text = newText {
+                let thing = Thing(text: text, creation: NSDate(), due: nil, magnitude: me.magnitude)
+                try! insertThing(self.db, thing: thing)
+            }
+            self._reloadData()
             self.rootVC.present(self.homeVC, self.rootVC.view.bounds)
         })
     }
@@ -142,6 +129,13 @@ class Root {
             [unowned self] button in
             self.rootVC.present(self.editVC, self.rootVC.view.bounds)
         }
+    }
+
+    private func _reloadData() {
+        let things = try! listThings(db)
+        bigButton.updateViewModel(_makeThingViewModel(things[0], "A BIG THING".localized(), .Big, bigButton))
+        midButton.updateViewModel(_makeThingViewModel(things[1], "A MEDIUM THING".localized(), .Mid, midButton))
+        smallButton.updateViewModel(_makeThingViewModel(things[2], "A SMALL THING".localized(), .Small, smallButton))
     }
 
     var vc: UIViewController {

@@ -1,6 +1,12 @@
 import Foundation
 import SQLite
 
+enum Magnitude: Int64 {
+    case Big
+    case Mid
+    case Small
+}
+
 private let thingTable = Table("thing")
 private let versionTable = Table("version")
 private let id = Expression<Int64>("id")
@@ -8,6 +14,7 @@ private let text = Expression<String>("text")
 private let due = Expression<NSDate?>("due")
 private let version = Expression<Int64>("version")
 private let creation = Expression<NSDate>("creation")
+private let magnitude = Expression<Int64>("magnitude")
 
 struct Fact<T> {
     let primaryKey: Int64
@@ -18,6 +25,11 @@ struct Thing {
     let text: String
     let creation: NSDate
     let due: NSDate?
+    let magnitude: Magnitude
+}
+
+func thingOfRow(row: Row) -> Thing {
+    return Thing(text: row[text], creation: row[creation], due: row[due], magnitude: Magnitude(rawValue: row[magnitude]).orElse(.Big))
 }
 
 func connect() throws -> Connection {
@@ -38,8 +50,15 @@ func reset() {
     }
 }
 
+func listThings(db: Connection) throws -> [Thing?] {
+    let big = db.pluck(thingTable.filter(magnitude == 0).limit(1).order(id.desc))
+    let mid = db.pluck(thingTable.filter(magnitude == 1).limit(1).order(id.desc))
+    let small = db.pluck(thingTable.filter(magnitude == 2).limit(1).order(id.desc))
+    return [big, mid, small].map { rowMaybe in rowMaybe.map(thingOfRow) }
+}
+
 func insertThing(db: Connection, thing: Thing) throws {
-    try db.run(thingTable.insert(text <- thing.text, due <- thing.due))
+    try db.run(thingTable.insert(text <- thing.text, due <- thing.due, magnitude <- thing.magnitude.rawValue))
 }
 
 class Facts {
@@ -50,7 +69,8 @@ class Facts {
 
         let migrations =
             [ ("make thing and version", _migrate1)
-            , ("add creation date", _migrate2)]
+            , ("add creation date", _migrate2)
+            , ("add magnitude", _migrate3)]
         let initialVersion = _version()
         let finalVersion = try migrations.dropFirst(Int(initialVersion)).reduce(initialVersion) {
             (v, tuple) in
@@ -89,5 +109,9 @@ class Facts {
     func _migrate2() throws {
         let date = NSDate()
         try db.run(thingTable.addColumn(creation, defaultValue: date))
+    }
+
+    func _migrate3() throws {
+        try db.run(thingTable.addColumn(magnitude, defaultValue: 0))
     }
 }

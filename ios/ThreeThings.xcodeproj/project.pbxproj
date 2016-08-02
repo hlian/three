@@ -18,6 +18,7 @@
 		0786E3031D232261000B2868 /* Localize_Swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 079D78F61D2320E8007F6CAD /* Localize_Swift.framework */; };
 		0786E3041D232261000B2868 /* Localize_Swift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 079D78F61D2320E8007F6CAD /* Localize_Swift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0786E3061D2326FE000B2868 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0786E3051D2326FE000B2868 /* HomeView.swift */; };
+		07AA5C9E1D50FD6E007CF49E /* PreludeX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA5C9D1D50FD6E007CF49E /* PreludeX.swift */; };
 		07D350B31D258A9000624FC9 /* Facts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D350B21D258A9000624FC9 /* Facts.swift */; };
 		07D350B41D258D9900624FC9 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07D350B01D258A7600624FC9 /* SQLite.framework */; };
 		07D350B51D258D9900624FC9 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 07D350B01D258A7600624FC9 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -60,6 +61,7 @@
 		0786E3051D2326FE000B2868 /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		079D78F61D2320E8007F6CAD /* Localize_Swift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Localize_Swift.framework; path = Carthage/Build/iOS/Localize_Swift.framework; sourceTree = "<group>"; };
 		079D78FA1D232119007F6CAD /* PureLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout.framework; path = Carthage/Build/iOS/PureLayout.framework; sourceTree = "<group>"; };
+		07AA5C9D1D50FD6E007CF49E /* PreludeX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreludeX.swift; sourceTree = "<group>"; };
 		07D350B01D258A7600624FC9 /* SQLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SQLite.framework; path = Carthage/Build/iOS/SQLite.framework; sourceTree = "<group>"; };
 		07D350B21D258A9000624FC9 /* Facts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Facts.swift; sourceTree = "<group>"; };
 		07DB720A1D22DC3200598823 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = Carthage/Build/iOS/ReactiveCocoa.framework; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 			children = (
 				07DB72261D23159200598823 /* UIViewX.swift */,
 				070B18ED1D26F016005015E1 /* UIFontX.swift */,
+				07AA5C9D1D50FD6E007CF49E /* PreludeX.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -266,6 +269,7 @@
 			files = (
 				0761A1A91D22DAED001FAF1C /* Root.swift in Sources */,
 				070B18EE1D26F016005015E1 /* UIFontX.swift in Sources */,
+				07AA5C9E1D50FD6E007CF49E /* PreludeX.swift in Sources */,
 				07DB72271D23159200598823 /* UIViewX.swift in Sources */,
 				070B18EC1D26EFF7005015E1 /* EditView.swift in Sources */,
 				070B18EA1D26EFAD005015E1 /* ViewControllers.swift in Sources */,
