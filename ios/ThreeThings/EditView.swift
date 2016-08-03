@@ -28,7 +28,7 @@ class EditView: UIView {
         done.autoPinEdgeToSuperviewEdge(.Top, withInset: 25)
         doneRightConstraint = done.autoPinEdgeToSuperviewEdge(.Right, withInset: 0)
         done.setTitle("DONE".localized(), forState: [.Normal])
-        done.titleLabel?.font = UIFont.systemFontOfSize(18, weight: UIFontWeightHeavy)
+        done.titleLabel?.font = bodyFont.fontWithSize(18)
 
         done.rac_signalForControlEvents([.TouchUpInside]).subscribeNext {
             [unowned self] _ in
@@ -67,7 +67,7 @@ class EditView: UIView {
     private func _invalidateTextViewFont() {
         let w = _width
         let minSize: CGFloat = 18.0
-        textView.font = UIFont.systemFontOfSize(w / 5, weight: UIFontWeightHeavy)
+        textView.font = bodyFont.fontWithSize(w / 5)
         while true {
             let font = textView.font!
             if font.pointSize <= minSize {
@@ -77,7 +77,7 @@ class EditView: UIView {
             if size.height <= textView._height - keyboardHeight.value - 0.08 * w {
                 break
             }
-            textView.font = UIFont.systemFontOfSize(font.pointSize - 1, weight: UIFontWeightHeavy)
+            textView.font = font.fontWithSize(font.pointSize - 1)
         }
     }
 

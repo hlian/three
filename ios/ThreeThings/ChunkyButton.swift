@@ -28,6 +28,7 @@ private class InnerChunkyButton: UIView {
         self.label.autoMatchDimension(.Width, toDimension: .Width, ofView: self, withMultiplier: 0.75)
         self.label.autoMatchDimension(.Height, toDimension: .Height, ofView: self, withMultiplier: 0.75)
         self.label.textAlignment = .Center
+        self.label.font = bodyFont
         self.addSubview(self.shadowView)
         self.shadowView.translatesAutoresizingMaskIntoConstraints = false
         self.shadowView.autoPinEdge(.Left, toEdge: .Left, ofView: self)
@@ -90,7 +91,7 @@ class ChunkyButton: UIControl {
         super.layoutSubviews()
         // Set the font to be proportional to height. That way we don't have to hardcode
         // font sizes for each screen size.
-        self.inner.label.font = UIFont.systemFontOfSize(self.bounds.size.height / 8, weight: UIFontWeightHeavy)
+        self.inner.label.font = self.inner.label.font.fontWithSize(self.bounds.size.height / 8)
         if self.selected {
             self.inner._frameOrigin = CGPointMake(0, 3)
         } else {
