@@ -32,24 +32,28 @@ func prepareKeyboardHeight() {
 }
 
 class ThingViewModel: ButtonViewModel, EditViewModel {
-    let thing: Thing?
+    let thing: Fact<Thing>?
     let text: String?
     let magnitude: Magnitude // pop pop
     let defaultText: String
     let didTap: ThingViewModel -> ()
     let editDone_: (ThingViewModel, String?) -> ()
+    let didTapDone: ThingViewModel -> ()
+    let active: Bool
 
-    init(thing: Thing?, magnitude: Magnitude, defaultText: String, didTap: ThingViewModel -> (), editDone: (ThingViewModel, String?) -> ()) {
+    init(thing: Fact<Thing>?, magnitude: Magnitude, defaultText: String, didTap: ThingViewModel -> (), editDone: (ThingViewModel, String?) -> (), didTapDone: ThingViewModel -> (), active: Bool) {
         self.magnitude = magnitude
         self.thing = thing
         self.defaultText = defaultText
-        self.text = thing?.text
+        self.text = thing?.fact.text
         self.didTap = didTap
         self.editDone_ = editDone
+        self.didTapDone = didTapDone
+        self.active = active
     }
 
     var chunkyButtonActive: Bool {
-        return thing != nil
+        return active
     }
 
     var chunkyButtonText: String {
@@ -62,6 +66,10 @@ class ThingViewModel: ButtonViewModel, EditViewModel {
 
     func chunkyButtonDidClick() {
         return didTap(self)
+    }
+
+    func chunkyButtonDone() {
+        return didTapDone(self)
     }
 
     func editDone(text: String) {
@@ -108,7 +116,7 @@ class Root {
         _reloadData()
     }
 
-    private func _makeThingViewModel(thing0: Thing?, _ defaultText: String, _ magnitude: Magnitude, _ button: ChunkyButton) -> ThingViewModel {
+    private func _makeThingViewModel(thing0: Fact<Thing>?, _ defaultText: String, _ magnitude: Magnitude, _ button: ChunkyButton) -> ThingViewModel {
         return ThingViewModel(thing: thing0, magnitude: magnitude, defaultText: defaultText, didTap: {
             [unowned self] me in
             self.editView.updateViewModel(me)
@@ -116,12 +124,18 @@ class Root {
         }, editDone: {
             [unowned self] (me, newText) in
             if let text = newText {
-                let thing = Thing(text: text, creation: NSDate(), due: nil, magnitude: me.magnitude)
+                let thing = Thing(text: text, creation: NSDate(), due: nil, magnitude: me.magnitude, done: false)
                 try! insertThing(self.db, thing: thing)
             }
             self._reloadData()
             self.rootVC.present(self.homeVC, self.rootVC.view.bounds)
-        })
+        }, didTapDone: {
+            [unowned self] me in
+            if let thing = thing0 {
+                try! markThingDone(self.db, thing: thing)
+            }
+            self._reloadData()
+        }, active: thing0 != nil && thing0?.fact.done != true)
     }
 
     private func _didClick(mag: Magnitude) -> ChunkyButton -> () {

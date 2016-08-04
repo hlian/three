@@ -10,41 +10,97 @@ import UIKit
 import PureLayout
 import ReactiveCocoa
 
+private class DoneControl: UIControl {
+    let label: UILabel
+    override init(frame: CGRect) {
+        label = UILabel(frame: someRect)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = bodyFont.fontWithSize(13)
+        label.textColor = UIColor.whiteColor()
+        let doneText = "Done".localized()
+        let doneString = NSMutableAttributedString(string: doneText)
+        doneString.addAttribute(NSKernAttributeName, value: 5, range: NSMakeRange(0, doneText.characters.count))
+        label.attributedText = doneString
+        super.init(frame: frame)
+
+        addSubview(label)
+        label.autoCenterInSuperview()
+        _invalidateSelected()
+    }
+
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        selected = true
+        UIView.animateWithDuration(0.1) {
+            self._invalidateSelected()
+        }
+    }
+
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        selected = false
+        UIView.animateWithDuration(0.1) {
+            self._invalidateSelected()
+        }
+        sendActionsForControlEvents([.TouchUpInside])
+    }
+
+    func _invalidateSelected() {
+        if (selected) {
+            backgroundColor = lightHomeColor
+        } else {
+            backgroundColor = homeColor
+        }
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 private class InnerChunkyButton: UIView {
     let label: UILabel
     let insetView: UIView
     let shadowView: UIView
+    let doneView: DoneControl
+    var bottomLabelConstraint: NSLayoutConstraint!
 
     init() {
         self.label = UILabel(frame: someRect)
         self.shadowView = UIView(frame: someRect)
         self.insetView = UIView(frame: someRect)
+        self.doneView = DoneControl(frame: someRect)
         super.init(frame: someRect)
 
-        self.label.numberOfLines = 0
-        self.addSubview(self.label)
-        self.label.translatesAutoresizingMaskIntoConstraints = false
-        self.label.autoCenterInSuperview()
-        self.label.autoMatchDimension(.Width, toDimension: .Width, ofView: self, withMultiplier: 0.75)
-        self.label.autoMatchDimension(.Height, toDimension: .Height, ofView: self, withMultiplier: 0.75)
-        self.label.textAlignment = .Center
-        self.label.font = bodyFont
-        self.addSubview(self.shadowView)
-        self.shadowView.translatesAutoresizingMaskIntoConstraints = false
-        self.shadowView.autoPinEdge(.Left, toEdge: .Left, ofView: self)
-        self.shadowView.autoPinEdge(.Right, toEdge: .Right, ofView: self)
-        self.shadowView.autoPinEdge(.Bottom, toEdge: .Bottom, ofView: self)
-        self.shadowView.autoSetDimension(.Height, toSize: 3)
-        self.addSubview(self.insetView)
-        self.insetView.translatesAutoresizingMaskIntoConstraints = false
-        self.insetView.autoPinEdge(.Left, toEdge: .Left, ofView: self)
-        self.insetView.autoPinEdge(.Right, toEdge: .Right, ofView: self)
-        self.insetView.autoPinEdge(.Top, toEdge: .Top, ofView: self)
-        self.insetView.autoSetDimension(.Height, toSize: 3)
+        label.numberOfLines = 0
+        addSubview(label)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.autoAlignAxisToSuperviewAxis(.Vertical)
+        label.autoMatchDimension(.Width, toDimension: .Width, ofView: self, withMultiplier: 0.75)
+        label.autoPinEdge(.Top, toEdge: .Top, ofView: self, withOffset: 0)
+        bottomLabelConstraint = label.autoPinEdge(.Bottom, toEdge: .Bottom, ofView: self, withOffset: 0)
+        label.textAlignment = .Center
+        label.font = bodyFont
+        addSubview(shadowView)
+        shadowView.translatesAutoresizingMaskIntoConstraints = false
+        shadowView.autoPinEdge(.Left, toEdge: .Left, ofView: self)
+        shadowView.autoPinEdge(.Right, toEdge: .Right, ofView: self)
+        shadowView.autoPinEdge(.Bottom, toEdge: .Bottom, ofView: self)
+        shadowView.autoSetDimension(.Height, toSize: 3)
+        addSubview(insetView)
+        insetView.translatesAutoresizingMaskIntoConstraints = false
+        insetView.autoPinEdge(.Left, toEdge: .Left, ofView: self)
+        insetView.autoPinEdge(.Right, toEdge: .Right, ofView: self)
+        insetView.autoPinEdge(.Top, toEdge: .Top, ofView: self)
+        insetView.autoSetDimension(.Height, toSize: 3)
+        addSubview(doneView)
+        doneView.translatesAutoresizingMaskIntoConstraints = false
+        doneView.autoPinEdge(.Left, toEdge: .Left, ofView: self)
+        doneView.autoPinEdge(.Right, toEdge: .Right, ofView: self)
+        doneView.autoPinEdge(.Bottom, toEdge: .Bottom, ofView: self, withOffset: -3)
+        doneView.autoSetDimension(.Height, toSize: 44)
     }
 
     func updateText(text: String) {
-        self.label.text = text
+        label.text = text
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -56,6 +112,7 @@ protocol ButtonViewModel {
     var chunkyButtonText: String { get }
     var chunkyButtonActive: Bool { get }
     func chunkyButtonDidClick()
+    func chunkyButtonDone()
 }
 
 class ChunkyButton: UIControl {
@@ -65,13 +122,18 @@ class ChunkyButton: UIControl {
     init() {
         self.inner = InnerChunkyButton()
         super.init(frame: someRect)
-        self.selected = false
-        self._invalidateSelected()
-        self.addSubview(self.inner)
 
-        self.rac_signalForControlEvents([.TouchUpInside]).subscribeNext {
+        _invalidateSelected()
+        addSubview(self.inner)
+
+        rac_signalForControlEvents([.TouchUpInside]).subscribeNext {
             [unowned self] _ in
             self.viewModel.chunkyButtonDidClick()
+        }
+
+        inner.doneView.rac_signalForControlEvents([.TouchUpInside]).subscribeNext {
+            [unowned self] _ in
+            self.viewModel.chunkyButtonDone()
         }
     }
 
@@ -81,9 +143,13 @@ class ChunkyButton: UIControl {
         if viewModel.chunkyButtonActive {
             inner.backgroundColor = homeTextColor
             inner.label.textColor = homeColor
+            inner.doneView.hidden = false
+            inner.bottomLabelConstraint.constant = -44
         } else {
             inner.backgroundColor = homeColor
             inner.label.textColor = homeTextColor
+            inner.doneView.hidden = true
+            inner.bottomLabelConstraint.constant = 0
         }
     }
 

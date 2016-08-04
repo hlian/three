@@ -15,6 +15,7 @@ private let due = Expression<NSDate?>("due")
 private let version = Expression<Int64>("version")
 private let creation = Expression<NSDate>("creation")
 private let magnitude = Expression<Int64>("magnitude")
+private let done = Expression<Bool>("done")
 
 struct Fact<T> {
     let primaryKey: Int64
@@ -26,10 +27,12 @@ struct Thing {
     let creation: NSDate
     let due: NSDate?
     let magnitude: Magnitude
+    let done: Bool
 }
 
-func thingOfRow(row: Row) -> Thing {
-    return Thing(text: row[text], creation: row[creation], due: row[due], magnitude: Magnitude(rawValue: row[magnitude]).orElse(.Big))
+func thingOfRow(row: Row) -> Fact<Thing> {
+    let thing = Thing(text: row[text], creation: row[creation], due: row[due], magnitude: Magnitude(rawValue: row[magnitude]).orElse(.Big), done: row[done])
+    return Fact(primaryKey: row[id], fact: thing)
 }
 
 func connect() throws -> Connection {
@@ -50,15 +53,19 @@ func reset() {
     }
 }
 
-func listThings(db: Connection) throws -> [Thing?] {
-    let big = db.pluck(thingTable.filter(magnitude == 0).limit(1).order(id.desc))
-    let mid = db.pluck(thingTable.filter(magnitude == 1).limit(1).order(id.desc))
-    let small = db.pluck(thingTable.filter(magnitude == 2).limit(1).order(id.desc))
+func listThings(db: Connection) throws -> [Fact<Thing>?] {
+    let big = db.pluck(thingTable.filter(magnitude == 0).filter(done == false).limit(1).order(id.desc))
+    let mid = db.pluck(thingTable.filter(magnitude == 1).filter(done == false).limit(1).order(id.desc))
+    let small = db.pluck(thingTable.filter(magnitude == 2).filter(done == false).limit(1).order(id.desc))
     return [big, mid, small].map { rowMaybe in rowMaybe.map(thingOfRow) }
 }
 
 func insertThing(db: Connection, thing: Thing) throws {
-    try db.run(thingTable.insert(text <- thing.text, due <- thing.due, magnitude <- thing.magnitude.rawValue))
+    try db.run(thingTable.insert(text <- thing.text, due <- thing.due, magnitude <- thing.magnitude.rawValue, done <- thing.done))
+}
+
+func markThingDone(db: Connection, thing: Fact<Thing>) throws {
+    try db.run(thingTable.filter(id == thing.primaryKey).update(done <- true))
 }
 
 class Facts {
@@ -70,7 +77,8 @@ class Facts {
         let migrations =
             [ ("make thing and version", _migrate1)
             , ("add creation date", _migrate2)
-            , ("add magnitude", _migrate3)]
+            , ("add magnitude", _migrate3)
+            , ("add done", _migrate4)]
         let initialVersion = _version()
         let finalVersion = try migrations.dropFirst(Int(initialVersion)).reduce(initialVersion) {
             (v, tuple) in
@@ -113,5 +121,9 @@ class Facts {
 
     func _migrate3() throws {
         try db.run(thingTable.addColumn(magnitude, defaultValue: 0))
+    }
+
+    func _migrate4() throws {
+        try db.run(thingTable.addColumn(done, defaultValue: false))
     }
 }

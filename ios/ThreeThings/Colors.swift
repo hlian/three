@@ -16,3 +16,5 @@ let homeInsetColor = ambientBackgroundColor
 
 let editTextColor = homeColor
 let editBackgroundColor = homeTextColor
+
+let lightHomeColor = UIColor(red: 61 / 255, green: 141 / 255, blue: 255 / 255, alpha: 1)
