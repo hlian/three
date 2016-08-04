@@ -165,22 +165,14 @@
 		0761A1A51D22DAED001FAF1C /* ThreeThings */ = {
 			isa = PBXGroup;
 			children = (
+				07AA5CF21D540041007CF49E /* Paperwork */,
+				07AA5CF11D540014007CF49E /* Prelude */,
+				07AA5CF01D540001007CF49E /* Views */,
 				070B18EF1D26F024005015E1 /* Extensions */,
 				0761A1A61D22DAED001FAF1C /* AppDelegate.swift */,
 				0761A1A81D22DAED001FAF1C /* Root.swift */,
-				0761A1AD1D22DAED001FAF1C /* Assets.xcassets */,
-				0761A1B21D22DAED001FAF1C /* Info.plist */,
-				07DB72111D22E32800598823 /* LaunchScreen.storyboard */,
-				07DB721D1D230EC600598823 /* HomeLayoutView.swift */,
-				07DB721F1D230F9F00598823 /* Utils.swift */,
-				07DB72281D231A7000598823 /* ChunkyButton.swift */,
-				07DB722A1D231B2900598823 /* Colors.swift */,
-				07DB72311D231E9F00598823 /* Bridge.h */,
-				0786E3051D2326FE000B2868 /* HomeView.swift */,
 				07D350B21D258A9000624FC9 /* Facts.swift */,
 				070B18E91D26EFAD005015E1 /* ViewControllers.swift */,
-				070B18EB1D26EFF7005015E1 /* EditView.swift */,
-				07AA5CDA1D526679007CF49E /* Fonts.swift */,
 			);
 			path = ThreeThings;
 			sourceTree = "<group>";
@@ -209,6 +201,38 @@
 				07AA5CD91D52662A007CF49E /* Lato-ThinItalic.ttf */,
 			);
 			name = Fonts;
+			sourceTree = "<group>";
+		};
+		07AA5CF01D540001007CF49E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				07DB72281D231A7000598823 /* ChunkyButton.swift */,
+				070B18EB1D26EFF7005015E1 /* EditView.swift */,
+				0786E3051D2326FE000B2868 /* HomeView.swift */,
+				07DB721D1D230EC600598823 /* HomeLayoutView.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		07AA5CF11D540014007CF49E /* Prelude */ = {
+			isa = PBXGroup;
+			children = (
+				07DB722A1D231B2900598823 /* Colors.swift */,
+				07AA5CDA1D526679007CF49E /* Fonts.swift */,
+				07DB721F1D230F9F00598823 /* Utils.swift */,
+			);
+			name = Prelude;
+			sourceTree = "<group>";
+		};
+		07AA5CF21D540041007CF49E /* Paperwork */ = {
+			isa = PBXGroup;
+			children = (
+				0761A1AD1D22DAED001FAF1C /* Assets.xcassets */,
+				07DB72111D22E32800598823 /* LaunchScreen.storyboard */,
+				07DB72311D231E9F00598823 /* Bridge.h */,
+				0761A1B21D22DAED001FAF1C /* Info.plist */,
+			);
+			name = Paperwork;
 			sourceTree = "<group>";
 		};
 		07DB722E1D231E7C00598823 /* Vendor */ = {
@@ -472,7 +496,7 @@
 				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 33;
+				CURRENT_PROJECT_VERSION = 34;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -515,7 +539,7 @@
 				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 33;
+				CURRENT_PROJECT_VERSION = 34;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
