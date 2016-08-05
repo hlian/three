@@ -88,9 +88,11 @@ class ThingViewModel: ButtonViewModel, EditViewModel {
 
 class Root {
     private let db: Connection!
-    private var rootVC: RootVC!
+    private var tabVC: UITabBarController!
+    private var thingsVC: RootVC!
     private var homeVC: HomeVC!
     private var editVC: EditVC!
+    private var calendarVC: UIViewController!
 
     private let editView = EditView()
     private let bigButton = ChunkyButton()
@@ -103,15 +105,24 @@ class Root {
         self.db = db
         let homeLayoutView = HomeLayoutView(withBigView: bigButton, midView: midButton, smallView: smallButton)
         let homeView = HomeView(layoutView: homeLayoutView)
-        let homeVC = HomeVC(homeView: homeView)
-        self.homeVC = homeVC
 
-        let editVC = EditVC(editView: editView, focusBlock: {
+        homeVC = HomeVC(homeView: homeView)
+
+        editVC = EditVC(editView: editView, focusBlock: {
             [unowned self] in
             self.editView.focus()
         })
-        self.editVC = editVC
-        self.rootVC = RootVC(childVC: homeVC)
+
+        thingsVC = RootVC(childVC: homeVC)
+        thingsVC.title = "Home".localized()
+        thingsVC.tabBarItem.image = UIImage(named: "person")!
+
+        calendarVC = UIViewController(nibName: nil, bundle: nil)
+        calendarVC.title = "Calendar".localized()
+        calendarVC.tabBarItem.image = UIImage(named: "clock")!
+
+        tabVC = UITabBarController(nibName: nil, bundle: nil)
+        tabVC.viewControllers = [thingsVC, calendarVC]
 
         _reloadData()
     }
@@ -120,7 +131,7 @@ class Root {
         return ThingViewModel(thing: thing0, magnitude: magnitude, defaultText: defaultText, didTap: {
             [unowned self] me in
             self.editView.updateViewModel(me)
-            self.rootVC.present(self.editVC, self.rootVC.view.bounds)
+            self.thingsVC.present(self.editVC, self.thingsVC.view.bounds)
         }, editDone: {
             [unowned self] (me, newText) in
             if let text = newText {
@@ -128,7 +139,7 @@ class Root {
                 try! insertThing(self.db, thing: thing)
             }
             self._reloadData()
-            self.rootVC.present(self.homeVC, self.rootVC.view.bounds)
+            self.thingsVC.present(self.homeVC, self.thingsVC.view.bounds)
         }, didTapDone: {
             [unowned self] me in
             if let thing = thing0 {
@@ -141,7 +152,7 @@ class Root {
     private func _didClick(mag: Magnitude) -> ChunkyButton -> () {
         return {
             [unowned self] button in
-            self.rootVC.present(self.editVC, self.rootVC.view.bounds)
+            self.thingsVC.present(self.editVC, self.thingsVC.view.bounds)
         }
     }
 
@@ -153,6 +164,6 @@ class Root {
     }
 
     var vc: UIViewController {
-        return self.rootVC
+        return self.tabVC
     }
 }

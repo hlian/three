@@ -32,11 +32,14 @@ class RootVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        addChildViewController(self.childVC)
-        view.addSubview(self.childVC.view)
-        childVC.view.frame = view.bounds
-        childVC.view.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+        addChildViewController(childVC)
+        view.addSubview(childVC.view)
+        _constrainChildView(childVC.view)
         childVC.didMoveToParentViewController(self)
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
     }
 
     func present(siblingVC: UIViewController, _ frame: CGRect) {
@@ -45,7 +48,8 @@ class RootVC: UIViewController {
         siblingVC.view.frame = frame
         siblingVC.view.layer.opacity = 0
         transitionFromViewController(childVC, toViewController: siblingVC, duration: 0.2, options: UIViewAnimationOptions(rawValue: 0), animations: {
-            siblingVC.view.frame = self.view.bounds
+            siblingVC.view.frame = self.childVC.view.bounds
+            self._constrainChildView(siblingVC.view)
             siblingVC.view.layer.opacity = 1
             self.childVC.view.layer.opacity = 0
         }) { finished in
@@ -54,6 +58,16 @@ class RootVC: UIViewController {
             siblingVC.didMoveToParentViewController(self)
             self.childVC = siblingVC
         }
+    }
+
+    private func _constrainChildView(view: UIView) {
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.autoPinToTopLayoutGuideOfViewController(self, withInset: 0)
+        view.autoPinEdgeToSuperviewEdge(.Left)
+        view.autoPinEdgeToSuperviewEdge(.Right)
+        view.autoPinToBottomLayoutGuideOfViewController(self, withInset: 0)
+        view.frame = view.bounds
+        view.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
     }
 
     required init?(coder aDecoder: NSCoder) {

@@ -16,7 +16,7 @@ class EditView: UIView {
         super.init(frame: someRect)
 
         addSubview(self.textView)
-        textView.autoPinEdgesToSuperviewEdgesWithInsets(UIEdgeInsetsMake(100, 0, 0, 0))
+        textView.autoPinEdgesToSuperviewEdgesWithInsets(UIEdgeInsetsMake(44, 0, 0, 0))
         textView.editable = true
         textView.textColor = editTextColor
         textView.backgroundColor = editBackgroundColor
@@ -25,7 +25,7 @@ class EditView: UIView {
 
         addSubview(done)
         done.translatesAutoresizingMaskIntoConstraints = false
-        done.autoPinEdgeToSuperviewEdge(.Top, withInset: 25)
+        done.autoPinEdgeToSuperviewEdge(.Top, withInset: 0)
         doneRightConstraint = done.autoPinEdgeToSuperviewEdge(.Right, withInset: 0)
         done.setTitle("DONE".localized(), forState: [.Normal])
         done.titleLabel?.font = bodyFont.fontWithSize(18)
