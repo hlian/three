@@ -50,7 +50,7 @@ extension UIView {
             return origin
         }
         set {
-            self.frame = CGRectMake(newValue.x - self._frameWidth, newValue.y - self._frameHeight, self._frameWidth, self._frameHeight)
+            self.frame = CGRect(x: newValue.x - self._frameWidth, y: newValue.y - self._frameHeight, width: self._frameWidth, height: self._frameHeight)
         }
     }
 
@@ -67,7 +67,7 @@ extension UIView {
     }
 
     public func debug() {
-        self.layer.borderColor = UIColor.redColor().CGColor
+        self.layer.borderColor = UIColor.red.cgColor
         self.layer.borderWidth = 1
     }
 }

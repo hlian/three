@@ -2,18 +2,18 @@ import Foundation
 import SQLite
 
 enum Magnitude: Int64 {
-    case Big
-    case Mid
-    case Small
+    case big
+    case mid
+    case small
 }
 
 private let thingTable = Table("thing")
 private let versionTable = Table("version")
 private let id = Expression<Int64>("id")
 private let text = Expression<String>("text")
-private let due = Expression<NSDate?>("due")
+private let due = Expression<Date?>("due")
 private let version = Expression<Int64>("version")
-private let creation = Expression<NSDate>("creation")
+private let creation = Expression<Date>("creation")
 private let magnitude = Expression<Int64>("magnitude")
 private let done = Expression<Bool>("done")
 
@@ -24,19 +24,19 @@ struct Fact<T> {
 
 struct Thing {
     let text: String
-    let creation: NSDate
-    let due: NSDate?
+    let creation: Date
+    let due: Date?
     let magnitude: Magnitude
     let done: Bool
 }
 
-func thingOfRow(row: Row) -> Fact<Thing> {
-    let thing = Thing(text: row[text], creation: row[creation], due: row[due], magnitude: Magnitude(rawValue: row[magnitude]).orElse(.Big), done: row[done])
+func thingOfRow(_ row: Row) -> Fact<Thing> {
+    let thing = Thing(text: row[text], creation: row[creation], due: row[due], magnitude: Magnitude(rawValue: row[magnitude]).orElse(.big), done: row[done])
     return Fact(primaryKey: row[id], fact: thing)
 }
 
 func connect() throws -> Connection {
-    if let path = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first {
+    if let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first {
         return try Connection("\(path)/facts.sqlite3")
     } else {
         fatalError("facts: unable to find document directory")
@@ -44,28 +44,28 @@ func connect() throws -> Connection {
 }
 
 func reset() {
-    if let path = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first {
+    if let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first {
         do {
-            try NSFileManager.defaultManager().removeItemAtPath("\(path)/facts.sqlite3")
+            try FileManager.default.removeItem(atPath: "\(path)/facts.sqlite3")
         } catch {
             fatalError("facts: unable to remove db")
         }
     }
 }
 
-func listThings(db: Connection) throws -> [Fact<Thing>?] {
-    let big = db.pluck(thingTable.filter(magnitude == 0).filter(done == false).limit(1).order(id.desc))
-    let mid = db.pluck(thingTable.filter(magnitude == 1).filter(done == false).limit(1).order(id.desc))
-    let small = db.pluck(thingTable.filter(magnitude == 2).filter(done == false).limit(1).order(id.desc))
+func listThings(_ db: Connection) throws -> [Fact<Thing>?] {
+    let big = try! db.pluck(thingTable.filter(magnitude == 0).filter(done == false).limit(1).order(id.desc))
+    let mid = try! db.pluck(thingTable.filter(magnitude == 1).filter(done == false).limit(1).order(id.desc))
+    let small = try! db.pluck(thingTable.filter(magnitude == 2).filter(done == false).limit(1).order(id.desc))
     return [big, mid, small].map { rowMaybe in rowMaybe.map(thingOfRow) }
 }
 
-func insertThing(db: Connection, thing: Thing) throws {
-    try db.run(thingTable.insert(text <- thing.text, due <- thing.due, magnitude <- thing.magnitude.rawValue, done <- thing.done))
+func insertThing(_ db: Connection, thing: Thing) throws {
+    _ = try db.run(thingTable.insert(text <- thing.text, due <- thing.due, magnitude <- thing.magnitude.rawValue, done <- thing.done))
 }
 
-func markThingDone(db: Connection, thing: Fact<Thing>) throws {
-    try db.run(thingTable.filter(id == thing.primaryKey).update(done <- true))
+func markThingDone(_ db: Connection, thing: Fact<Thing>) throws {
+    _ = try db.run(thingTable.filter(id == thing.primaryKey).update(done <- true))
 }
 
 class Facts {
@@ -87,16 +87,16 @@ class Facts {
             try f()
             return v + 1
         }
-        try db.run(versionTable.update(version <- finalVersion))
+        _ = try db.run(versionTable.update(version <- finalVersion))
         print("facts: we are at version \(_version())")
     }
 
     func _version() -> Int64 {
-        let count = db.scalar("select count(name) from sqlite_master") as! Int64
+        let count = try! db.scalar("select count(name) from sqlite_master") as! Int64
         if count == 0 {
             return 0
         } else {
-            return db.scalar("select version from version") as! Int64
+            return try! db.scalar("select version from version") as! Int64
         }
     }
 
@@ -107,15 +107,15 @@ class Facts {
         })
         try db.run(thingTable.create {
             t in
-            t.column(id, primaryKey: .Autoincrement)
+            t.column(id, primaryKey: .autoincrement)
             t.column(text)
             t.column(due)
         })
-        try db.run(versionTable.insert(version <- 1))
+        _ = try db.run(versionTable.insert(version <- 1))
     }
 
     func _migrate2() throws {
-        let date = NSDate()
+        let date = Date()
         try db.run(thingTable.addColumn(creation, defaultValue: date))
     }
 

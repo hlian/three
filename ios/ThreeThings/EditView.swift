@@ -1,36 +1,38 @@
 import UIKit
+import ReactiveCocoa
+import ReactiveObjC
 
 protocol EditViewModel {
     var editText: String { get }
-    func editDone(text: String)
+    func editDone(_ text: String)
 }
 
 class EditView: UIView {
-    private let textView: UITextView = UITextView(forAutoLayout: ())
-    private let done: UIButton = UIButton(type: .System)
-    private var viewModel: EditViewModel?
+    fileprivate let textView: UITextView = UITextView(forAutoLayout: ())
+    fileprivate let done: UIButton = UIButton(type: .system)
+    fileprivate var viewModel: EditViewModel?
 
-    private var doneRightConstraint: NSLayoutConstraint!
+    fileprivate var doneRightConstraint: NSLayoutConstraint!
 
     init() {
         super.init(frame: someRect)
 
         addSubview(self.textView)
-        textView.autoPinEdgesToSuperviewEdgesWithInsets(UIEdgeInsetsMake(44, 0, 0, 0))
-        textView.editable = true
+        textView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsetsMake(44, 0, 0, 0))
+        textView.isEditable = true
         textView.textColor = editTextColor
         textView.backgroundColor = editBackgroundColor
         textView.textContainer.lineFragmentPadding = 0
-        textView.returnKeyType = .Done
+        textView.returnKeyType = .done
 
         addSubview(done)
         done.translatesAutoresizingMaskIntoConstraints = false
-        done.autoPinEdgeToSuperviewEdge(.Top, withInset: 0)
-        doneRightConstraint = done.autoPinEdgeToSuperviewEdge(.Right, withInset: 0)
-        done.setTitle("DONE".localized(), forState: [.Normal])
-        done.titleLabel?.font = bodyFont.fontWithSize(18)
+        done.autoPinEdge(toSuperviewEdge: .top, withInset: 0)
+        doneRightConstraint = done.autoPinEdge(toSuperviewEdge: .right, withInset: 0)
+        done.setTitle("DONE".localized(), for: UIControlState())
+        done.titleLabel?.font = bodyFont.withSize(18)
 
-        done.rac_signalForControlEvents([.TouchUpInside]).subscribeNext {
+        done.rac_signal(for: [.touchUpInside]).subscribeNext {
             [unowned self] _ in
             self.viewModel?.editDone(self.textView.text)
         }
@@ -40,13 +42,13 @@ class EditView: UIView {
             self._invalidateTextViewFont()
         }
 
-        keyboardHeight.signal.observeNext {
+        keyboardHeight.signal.observeValues {
             [unowned self] _ in
             self._invalidateTextViewFont()
         }
     }
 
-    func updateViewModel(viewModel: EditViewModel) {
+    func updateViewModel(_ viewModel: EditViewModel) {
         textView.text = viewModel.editText
         self.viewModel = viewModel
         self._invalidateTextViewFont()
@@ -64,10 +66,10 @@ class EditView: UIView {
         self._invalidateTextViewFont()
     }
 
-    private func _invalidateTextViewFont() {
+    fileprivate func _invalidateTextViewFont() {
         let w = _width
         let minSize: CGFloat = 18.0
-        textView.font = bodyFont.fontWithSize(w / 5)
+        textView.font = bodyFont.withSize(w / 5)
         while true {
             let font = textView.font!
             if font.pointSize <= minSize {
@@ -77,7 +79,7 @@ class EditView: UIView {
             if size.height <= textView._height - keyboardHeight.value - 0.08 * w {
                 break
             }
-            textView.font = font.fontWithSize(font.pointSize - 1)
+            textView.font = font.withSize(font.pointSize - 1)
         }
     }
 

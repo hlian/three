@@ -8,15 +8,15 @@
 
 import UIKit
 import PureLayout
-import ReactiveCocoa
+import ReactiveSwift
 
 private class DoneControl: UIControl {
     let label: UILabel
     override init(frame: CGRect) {
         label = UILabel(frame: someRect)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = bodyFont.fontWithSize(13)
-        label.textColor = UIColor.whiteColor()
+        label.font = bodyFont.withSize(13)
+        label.textColor = UIColor.white
         let doneText = "Done".localized()
         let doneString = NSMutableAttributedString(string: doneText)
         doneString.addAttribute(NSKernAttributeName, value: 5, range: NSMakeRange(0, doneText.characters.count))
@@ -28,23 +28,23 @@ private class DoneControl: UIControl {
         _invalidateSelected()
     }
 
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        selected = true
-        UIView.animateWithDuration(0.1) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        isSelected = true
+        UIView.animate(withDuration: 0.1, animations: {
             self._invalidateSelected()
-        }
+        }) 
     }
 
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        selected = false
-        UIView.animateWithDuration(0.1) {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        isSelected = false
+        UIView.animate(withDuration: 0.1, animations: {
             self._invalidateSelected()
-        }
-        sendActionsForControlEvents([.TouchUpInside])
+        }) 
+        sendActions(for: [.touchUpInside])
     }
 
     func _invalidateSelected() {
-        if (selected) {
+        if (isSelected) {
             backgroundColor = lightHomeColor
         } else {
             backgroundColor = homeColor
@@ -73,33 +73,33 @@ private class InnerChunkyButton: UIView {
         label.numberOfLines = 0
         addSubview(label)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.autoAlignAxisToSuperviewAxis(.Vertical)
-        label.autoMatchDimension(.Width, toDimension: .Width, ofView: self, withMultiplier: 0.75)
-        label.autoPinEdge(.Top, toEdge: .Top, ofView: self, withOffset: 0)
-        bottomLabelConstraint = label.autoPinEdge(.Bottom, toEdge: .Bottom, ofView: self, withOffset: 0)
-        label.textAlignment = .Center
+        label.autoAlignAxis(toSuperviewAxis: .vertical)
+        label.autoMatch(.width, to: .width, of: self, withMultiplier: 0.75)
+        label.autoPinEdge(.top, to: .top, of: self, withOffset: 0)
+        bottomLabelConstraint = label.autoPinEdge(.bottom, to: .bottom, of: self, withOffset: 0)
+        label.textAlignment = .center
         label.font = bodyFont
         addSubview(shadowView)
         shadowView.translatesAutoresizingMaskIntoConstraints = false
-        shadowView.autoPinEdge(.Left, toEdge: .Left, ofView: self)
-        shadowView.autoPinEdge(.Right, toEdge: .Right, ofView: self)
-        shadowView.autoPinEdge(.Bottom, toEdge: .Bottom, ofView: self)
-        shadowView.autoSetDimension(.Height, toSize: 3)
+        shadowView.autoPinEdge(.left, to: .left, of: self)
+        shadowView.autoPinEdge(.right, to: .right, of: self)
+        shadowView.autoPinEdge(.bottom, to: .bottom, of: self)
+        shadowView.autoSetDimension(.height, toSize: 3)
         addSubview(insetView)
         insetView.translatesAutoresizingMaskIntoConstraints = false
-        insetView.autoPinEdge(.Left, toEdge: .Left, ofView: self)
-        insetView.autoPinEdge(.Right, toEdge: .Right, ofView: self)
-        insetView.autoPinEdge(.Top, toEdge: .Top, ofView: self)
-        insetView.autoSetDimension(.Height, toSize: 3)
+        insetView.autoPinEdge(.left, to: .left, of: self)
+        insetView.autoPinEdge(.right, to: .right, of: self)
+        insetView.autoPinEdge(.top, to: .top, of: self)
+        insetView.autoSetDimension(.height, toSize: 3)
         addSubview(doneView)
         doneView.translatesAutoresizingMaskIntoConstraints = false
-        doneView.autoPinEdge(.Left, toEdge: .Left, ofView: self)
-        doneView.autoPinEdge(.Right, toEdge: .Right, ofView: self)
-        doneView.autoPinEdge(.Bottom, toEdge: .Bottom, ofView: self, withOffset: -3)
-        doneView.autoSetDimension(.Height, toSize: 44)
+        doneView.autoPinEdge(.left, to: .left, of: self)
+        doneView.autoPinEdge(.right, to: .right, of: self)
+        doneView.autoPinEdge(.bottom, to: .bottom, of: self, withOffset: -3)
+        doneView.autoSetDimension(.height, toSize: 44)
     }
 
-    func updateText(text: String) {
+    func updateText(_ text: String) {
         label.text = text
     }
 
@@ -116,8 +116,8 @@ protocol ButtonViewModel {
 }
 
 class ChunkyButton: UIControl {
-    private let inner: InnerChunkyButton
-    private var viewModel: ButtonViewModel!
+    fileprivate let inner: InnerChunkyButton
+    fileprivate var viewModel: ButtonViewModel!
 
     init() {
         self.inner = InnerChunkyButton()
@@ -126,29 +126,29 @@ class ChunkyButton: UIControl {
         _invalidateSelected()
         addSubview(self.inner)
 
-        rac_signalForControlEvents([.TouchUpInside]).subscribeNext {
+        rac_signal(for: [.touchUpInside]).subscribeNext {
             [unowned self] _ in
             self.viewModel.chunkyButtonDidClick()
         }
 
-        inner.doneView.rac_signalForControlEvents([.TouchUpInside]).subscribeNext {
+        inner.doneView.rac_signal(for: [.touchUpInside]).subscribeNext {
             [unowned self] _ in
             self.viewModel.chunkyButtonDone()
         }
     }
 
-    func updateViewModel(viewModel: ButtonViewModel) {
+    func updateViewModel(_ viewModel: ButtonViewModel) {
         self.viewModel = viewModel
         self.inner.updateText(viewModel.chunkyButtonText)
         if viewModel.chunkyButtonActive {
             inner.backgroundColor = homeTextColor
             inner.label.textColor = homeColor
-            inner.doneView.hidden = false
+            inner.doneView.isHidden = false
             inner.bottomLabelConstraint.constant = -44
         } else {
             inner.backgroundColor = homeColor
             inner.label.textColor = homeTextColor
-            inner.doneView.hidden = true
+            inner.doneView.isHidden = true
             inner.bottomLabelConstraint.constant = 0
         }
     }
@@ -157,9 +157,9 @@ class ChunkyButton: UIControl {
         super.layoutSubviews()
         // Set the font to be proportional to height. That way we don't have to hardcode
         // font sizes for each screen size.
-        self.inner.label.font = self.inner.label.font.fontWithSize(self.bounds.size.height / 8)
-        if self.selected {
-            self.inner._frameOrigin = CGPointMake(0, 3)
+        self.inner.label.font = self.inner.label.font.withSize(self.bounds.size.height / 8)
+        if self.isSelected {
+            self.inner._frameOrigin = CGPoint(x: 0, y: 3)
         } else {
             self.inner.frame = self.bounds
         }
@@ -169,20 +169,20 @@ class ChunkyButton: UIControl {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        self.selected = true
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.isSelected = true
         self._invalidateSelected()
     }
 
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        self.selected = false
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.isSelected = false
         self._invalidateSelected()
-        self.sendActionsForControlEvents([.TouchUpInside])
+        self.sendActions(for: [.touchUpInside])
     }
 
     func _invalidateSelected() {
-        if (self.selected) {
-            self.inner.shadowView.backgroundColor = UIColor.clearColor()
+        if (self.isSelected) {
+            self.inner.shadowView.backgroundColor = UIColor.clear
         } else {
             self.inner.shadowView.backgroundColor = homeShadowColor
         }

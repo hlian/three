@@ -1,5 +1,5 @@
 extension Optional {
-    func orElse(elsa: Wrapped) -> Wrapped {
+    func orElse(_ elsa: Wrapped) -> Wrapped {
         if let x = self {
             return x
         } else {

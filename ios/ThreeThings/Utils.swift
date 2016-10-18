@@ -8,4 +8,4 @@
 
 import UIKit
 
-let someRect = CGRectMake(0, 0, 500, 500)
+let someRect = CGRect(x: 0, y: 0, width: 500, height: 500)

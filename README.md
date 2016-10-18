@@ -45,6 +45,8 @@ app for smart people with lustrous hair.
   • Everybody should be using Carthage
   
   • SQLite.swift is fun and friendly (Core
-    Data is a drunk dude who follows you
-    home)
+    Data is drunk and follows you home)
+
+  • Swift evolution seems intent on punishing me
+    for leaving my iOS job
 </pre>

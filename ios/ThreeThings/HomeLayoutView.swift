@@ -22,15 +22,15 @@ class HomeLayoutView: UIView {
         let usableX = self.bounds.size.width - 20
         let usableY = self.bounds.size.height - 20
 
-        self.bigView._frameOrigin = CGPointMake(0, 0)
+        self.bigView._frameOrigin = CGPoint(x: 0, y: 0)
         self.bigView._frameWidth = self.bounds.size.width
         self.bigView._frameHeight = usableY * 0.55
 
-        self.midView._frameOrigin = CGPointMake(0, self.bigView._frameSteam.y + 20)
+        self.midView._frameOrigin = CGPoint(x: 0, y: self.bigView._frameSteam.y + 20)
         self.midView._frameWidth = usableX * 0.55
         self.midView._frameHeight = usableY * 0.45
 
-        self.smallView._frameOrigin = CGPointMake(self.midView._frameSteam.x + 20, self.midView._frameOrigin.y)
+        self.smallView._frameOrigin = CGPoint(x: self.midView._frameSteam.x + 20, y: self.midView._frameOrigin.y)
         self.smallView._frameWidth = usableX * 0.45
         self.smallView._frameHeight = usableY * 0.45
     }

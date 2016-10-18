@@ -1,4 +1,6 @@
-github "ReactiveCocoa/ReactiveCocoa"
+github "ReactiveCocoa/ReactiveCocoa" "master"
+github "ReactiveCocoa/ReactiveObjC" "master"
+github "ReactiveCocoa/ReactiveSwift" "1.0.0-alpha.2"
 github "PureLayout/PureLayout"
 github "marmelroy/Localize-Swift"
-github "stephencelis/SQLite.swift"
+github "stephencelis/SQLite.swift" "prepare-0.11.0"

@@ -35,19 +35,19 @@ class RootVC: UIViewController {
         addChildViewController(childVC)
         view.addSubview(childVC.view)
         _constrainChildView(childVC.view)
-        childVC.didMoveToParentViewController(self)
+        childVC.didMove(toParentViewController: self)
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
     }
 
-    func present(siblingVC: UIViewController, _ frame: CGRect) {
-        childVC.willMoveToParentViewController(nil)
+    func present(_ siblingVC: UIViewController, _ frame: CGRect) {
+        childVC.willMove(toParentViewController: nil)
         addChildViewController(siblingVC)
         siblingVC.view.frame = frame
         siblingVC.view.layer.opacity = 0
-        transitionFromViewController(childVC, toViewController: siblingVC, duration: 0.2, options: UIViewAnimationOptions(rawValue: 0), animations: {
+        transition(from: childVC, to: siblingVC, duration: 0.2, options: UIViewAnimationOptions(rawValue: 0), animations: {
             siblingVC.view.frame = self.childVC.view.bounds
             self._constrainChildView(siblingVC.view)
             siblingVC.view.layer.opacity = 1
@@ -55,19 +55,19 @@ class RootVC: UIViewController {
         }) { finished in
             self.childVC.view.layer.opacity = 1
             self.childVC.removeFromParentViewController()
-            siblingVC.didMoveToParentViewController(self)
+            siblingVC.didMove(toParentViewController: self)
             self.childVC = siblingVC
         }
     }
 
-    private func _constrainChildView(view: UIView) {
+    fileprivate func _constrainChildView(_ view: UIView) {
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.autoPinToTopLayoutGuideOfViewController(self, withInset: 0)
-        view.autoPinEdgeToSuperviewEdge(.Left)
-        view.autoPinEdgeToSuperviewEdge(.Right)
-        view.autoPinToBottomLayoutGuideOfViewController(self, withInset: 0)
+        view.autoPin(toTopLayoutGuideOf: self, withInset: 0)
+        view.autoPinEdge(toSuperviewEdge: .left)
+        view.autoPinEdge(toSuperviewEdge: .right)
+        view.autoPin(toBottomLayoutGuideOf: self, withInset: 0)
         view.frame = view.bounds
-        view.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+        view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -78,7 +78,7 @@ class RootVC: UIViewController {
 class EditVC: UIViewController {
     let editView: UIView
     let focusBlock: () -> ()
-    init(editView: UIView, focusBlock: () -> ()) {
+    init(editView: UIView, focusBlock: @escaping () -> ()) {
         self.editView = editView
         self.focusBlock = focusBlock
         super.init(nibName: nil, bundle: nil)
@@ -89,7 +89,7 @@ class EditVC: UIViewController {
         self.view.backgroundColor = ambientBackgroundColor
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.focusBlock()
     }
