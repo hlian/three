@@ -150,13 +150,6 @@ class Root {
         }, active: thing0 != nil && thing0?.fact.done != true)
     }
 
-    fileprivate func _didClick(_ mag: Magnitude) -> (ChunkyButton) -> () {
-        return {
-            [unowned self] button in
-            self.thingsVC.present(self.editVC, self.thingsVC.view.bounds)
-        }
-    }
-
     fileprivate func _reloadData() {
         let things = try! listThings(db)
         bigButton.updateViewModel(_makeThingViewModel(things[0], "A BIG THING".localized(), .big, bigButton))
